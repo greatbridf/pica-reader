@@ -1,21 +1,36 @@
 <template>
   <view class="content">
-    <image class="logo" src="../../static/logo.png"></image>
-    <view>
-      <text class="title">{{ title }}</text>
-    </view>
+    <text>{{ content }}</text>
   </view>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
+import * as pica from "../../pica-api/pica";
 export default Vue.extend({
   data() {
     return {
-      title: "Fuck",
+      content: "",
+      token: "",
     };
   },
-  onLoad() {},
+  onLoad() {
+    if (uni.getStorageInfoSync().keys.indexOf("token") < 0) {
+      uni.reLaunch({
+        url: "/pages/login",
+      });
+    } else {
+      this.token = uni.getStorageSync("token");
+      pica
+        .categories(this.token)
+        .then((result) => {
+          this.content = JSON.stringify(result);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  },
   methods: {},
 });
 </script>
