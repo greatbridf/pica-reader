@@ -1,5 +1,5 @@
 <template>
-  <view class="comic-wrapper">
+  <view class="comic-wrapper" @click="navigate_to_comic_detail">
     <image-view
       image_class="comic-image"
       :image_obj="comic_data.thumb"
@@ -43,6 +43,13 @@ export default Vue.extend({
   components: {
     imageView,
   },
+  methods: {
+    navigate_to_comic_detail() {
+      uni.navigateTo({
+        url: "/pages/comic-detail?id=" + this.comic_data._id,
+      });
+    },
+  },
 });
 </script>
 
@@ -51,6 +58,9 @@ export default Vue.extend({
   display: flex;
   margin: 0.2rem;
   border: solid black 1px;
+}
+.comic-wrapper:hover {
+  filter: opacity(0.7);
 }
 .comic-image {
   width: 3rem;

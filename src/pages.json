@@ -17,6 +17,12 @@
 			"style": {
 				"navigationBarTitleText": "Comic_List"
 			}
+		},
+		{
+			"path": "pages/comic-detail",
+			"style": {
+				"navigationBarTitleText": "Comic_Detail"
+			}
 		}
 	],
 	"globalStyle": {

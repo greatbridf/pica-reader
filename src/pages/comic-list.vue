@@ -19,6 +19,7 @@ export default Vue.extend({
     };
   },
   onLoad(options: any) {
+    if (!options.title) throw new Error("bad options");
     this.title = options.title;
     uni.setNavigationBarTitle({
       title: this.title,

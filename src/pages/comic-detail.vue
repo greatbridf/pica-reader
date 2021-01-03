@@ -1,0 +1,172 @@
+<template>
+  <view style="margin: 0.3rem">
+    <view class="detail-description-wrapper">
+      <view class="detail-description-left">
+        <image-view
+          :image_obj="thumb"
+          class="detail-description-image"
+        ></image-view>
+        <view class="detail-description-button-wrapper">
+          <button-icon-label class="detail-description-favo">
+            <text v-if="comic.isFavourite">已收藏</text>
+            <text v-else>收藏</text>
+          </button-icon-label>
+          <button-icon-label class="detail-description-like">
+            {{ comic.likesCount }}
+          </button-icon-label>
+        </view>
+      </view>
+      <view class="detail-description-right">
+        <view class="detail-description-title-wrapper">
+          <text class="detail-description-title">{{ comic.title }}</text>
+          <text class="detail-description-title-pages"
+            >（{{ comic.pagesCount }}页）</text
+          >
+        </view>
+        <text class="detail-description-author">{{ comic.author }}</text>
+        <text class="detail-description-translation">{{
+          comic.chineseTeam
+        }}</text>
+        <view class="detail-description-tags">
+          <comic-tag v-for="(tag, index) in comic.tags" :key="index">{{
+            tag
+          }}</comic-tag>
+        </view>
+        <view class="detail-description-text-wrapper">
+          <text class="detail-description-text">{{ comic.description }}</text>
+          <!-- expand button goes here -->
+        </view>
+      </view>
+    </view>
+    <view class="detail-eps-wrapper">
+      <text class="detail-eps-total">共{{ comic.epsCount }}话</text>
+      <view class="detail-eps-list">
+        <text class="detail-eps-item" v-for="(ep, index) in eps" :key="index">{{
+          ep.title
+        }}</text>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script lang="ts">
+import { ComicDetail, EpsItem, Image as ImageType } from "@/pica-api/type";
+import * as pica from "../pica-api/pica";
+import Vue from "vue";
+import imageView from "../components/image-view.vue";
+import buttonIconLabel from "../components/button-icon-label.vue";
+export default Vue.extend({
+  data() {
+    return {
+      comic_id: "",
+      comic: {
+        thumb: {},
+        tags: ["tag1", "tag2", "tag3"],
+        categories: ["cat1", "cat2"],
+      } as ComicDetail,
+      eps: [] as EpsItem[],
+      thumb: {} as ImageType,
+    };
+  },
+  methods: {
+    load_comic() {
+      pica
+        .detail(uni.getStorageSync("token"), this.comic_id)
+        .then((detail) => {
+          this.comic = detail;
+          this.thumb = this.comic.thumb;
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+  },
+  onLoad(options: any) {
+    if (!options.id) throw new Error("bad options");
+    this.comic_id = options.id;
+  },
+  mounted() {
+    this.load_comic();
+  },
+  components: { imageView },
+});
+</script>
+
+<style>
+.detail-description-wrapper {
+  display: flex;
+}
+
+.detail-description-right {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  margin-left: 0.5rem;
+}
+
+.detail-description-title-wrapper {
+  display: flex;
+  min-width: 0;
+  font-size: 0.85rem;
+}
+
+.detail-description-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.detail-description-title-pages {
+  flex-shrink: 0;
+}
+
+.detail-description-author {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: palevioletred;
+  font-size: 0.7rem;
+}
+
+.detail-description-translation {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: deepskyblue;
+  font-size: 0.7rem;
+}
+
+.detail-description-text-wrapper {
+  display: flex;
+}
+
+.detail-description-text {
+  font-size: 0.6rem;
+}
+
+.detail-eps-wrapper {
+  margin-top: 1.5rem;
+}
+
+.detail-eps-total {
+  display: flex;
+  font-size: 0.7rem;
+}
+
+.detail-eps-list {
+  display: flex;
+  flex-direction: row;
+  padding: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.detail-eps-item {
+  display: flex;
+  width: 3rem;
+  border: solid 1px darkgrey;
+  justify-content: center;
+  align-content: center;
+  margin: 0.3rem;
+}
+</style>
