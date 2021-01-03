@@ -1,7 +1,8 @@
 'use strict';
 
+import { pica_storage_server_url, pxy_img_url } from './defs';
 import { send_request, send_get, send_request_raw } from './request'
-import { Category, ComicList, ComicDetail, Eps, Ep } from './type'
+import { Category, ComicList, ComicDetail, Eps, Ep, Image } from './type'
 
 const sign_in_url = 'auth/sign-in'
 const categories_url = 'categories'
@@ -71,7 +72,9 @@ async function ep(token: string, comic_id: string, ep_order: number, ep_page: nu
 }
 
 async function image_response(token: string, file_server: string, h_url: string) {
-    return await send_request_raw(file_server + '/', 'static/' + h_url, 'GET', null, null, token)
+    let resp = await send_request_raw(file_server + '/', 'static/' + h_url, 'GET', null, null, token)
+    console.log(resp.headers)
+    return resp
 }
 
 // async function image(token: string, file_server: string, h_url: string): Promise<Buffer> {
@@ -81,6 +84,14 @@ async function image_response(token: string, file_server: string, h_url: string)
 // async function image_stream(token: string, file_server: string, h_url: string): Promise<NodeJS.ReadableStream> {
 async function image_stream(token: string, file_server: string, h_url: string): Promise<ReadableStream<Uint8Array>> {
     return (await image_response(token, file_server, h_url)).body!;
+}
+
+async function image_blob(token: string, image: Image): Promise<Blob> {
+    if (image.fileServer === pica_storage_server_url) {
+    } else {
+        throw new Error('storage server not found')
+    }
+    return (await image_response(token, pxy_img_url, image.path)).blob();
 }
 
 // temporarily unavailable: returns empty array
@@ -110,6 +121,7 @@ export {
     eps,
     ep,
     // image,
+    image_blob,
     image_stream,
     recommendations,
     keywords,

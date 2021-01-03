@@ -1,6 +1,7 @@
 import header from './header'
+import { pxy_api_url } from './defs'
 
-const base_url = 'https://pica.greatbridf.xyz/'
+const base_url = pxy_api_url
 
 type Method = 'POST' | 'GET'
 

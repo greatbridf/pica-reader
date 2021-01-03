@@ -1,16 +1,22 @@
 <template>
   <view class="content">
-    <text>{{ content }}</text>
+    <div id="bef"></div>
+    <view v-bind:key="index" v-for="(cate, index) in categories">
+      <category :category_data="cate"></category>
+    </view>
   </view>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import * as pica from "../../pica-api/pica";
+import category from "../../components/category.vue";
+import { Category } from "../../pica-api/type";
+
 export default Vue.extend({
   data() {
     return {
-      content: "",
+      categories: [] as Category[],
       token: "",
     };
   },
@@ -24,7 +30,7 @@ export default Vue.extend({
       pica
         .categories(this.token)
         .then((result) => {
-          this.content = JSON.stringify(result);
+          this.categories = result;
         })
         .catch((err) => {
           console.error(err);
@@ -32,15 +38,23 @@ export default Vue.extend({
     }
   },
   methods: {},
+  components: {
+    category,
+  },
 });
 </script>
 
 <style>
+#bef {
+  height: 1rem;
+  width: 100%;
+}
 .content {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .logo {
