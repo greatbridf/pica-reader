@@ -11,7 +11,7 @@ export default Vue.extend({
     async blob_url() {
       if (!this.image_obj || !this.image_obj.path) {
         // TODO: return break image
-        return new Blob();
+        return URL.createObjectURL(new Blob()).toString();
       }
       let blob = await (
         await fetch(pxy_img_url + "/pic/" + this.image_obj.path, {
