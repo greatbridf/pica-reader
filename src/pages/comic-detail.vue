@@ -80,6 +80,7 @@ export default Vue.extend({
         .detail(uni.getStorageSync("token"), this.comic_id)
         .then((detail) => {
           this.comic = detail;
+          uni.setNavigationBarTitle({ title: this.comic.title });
           this.thumb = this.comic.thumb;
         })
         .catch((err) => {
