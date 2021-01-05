@@ -89,7 +89,7 @@ async function image_stream(token: string, file_server: string, h_url: string): 
 async function image_blob(token: string, image: Image): Promise<Blob> {
     if (image.fileServer === pica_storage_server_url) {
     } else {
-        throw new Error('storage server not found')
+        throw new Error('storage server not found: ' + image.fileServer)
     }
     return (await image_response(token, pxy_img_url, image.path)).blob();
 }

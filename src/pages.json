@@ -23,6 +23,13 @@
 			"style": {
 				"navigationBarTitleText": "Comic_Detail"
 			}
+		},
+		{
+			"path": "pages/reader",
+			"style": {
+				"navigationBarTitleText": "Comic_Reader",
+				"pageStyle": "height: 100%; background-color: #111;"
+			}
 		}
 	],
 	"globalStyle": {
