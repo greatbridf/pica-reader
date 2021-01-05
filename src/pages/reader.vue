@@ -2,7 +2,12 @@
   <view class="gb-reader-wrapper">
     <img class="gb-reader-image" :src="current_image_blob_url" />
     <div class="gb-reader-info-wrapper">
-      <div class="gb-reader-info-page">{{ current }} / {{ total }}</div>
+      <div class="gb-reader-info-item gb-reader-info-page">
+        {{ current }} / {{ total }}
+      </div>
+      <div class="gb-reader-info-item gb-reader-info-queue">
+        {{ JSON.stringify(queue) }}
+      </div>
     </div>
     <div class="gb-reader-control-wrapper">
       <div @click="flip_left" class="gb-reader-control-left"></div>
@@ -30,6 +35,7 @@ export default Vue.extend({
       total: 0,
       // TODO: optimize this ep shit
       ep_page: 0,
+      queue: [] as number[],
     };
   },
   onLoad(options: any) {
@@ -40,8 +46,12 @@ export default Vue.extend({
   },
   methods: {
     async load_images(start: number, end: number) {
-      console.log("loading ", start);
       for (let i = start; i <= end; ++i) {
+        // check if the page is in loading queue
+        if (this.queue.indexOf(i) !== -1) return;
+        // insert page numbers into loading queue
+        this.queue.push(i);
+        console.log("loading ", start);
         if (!this.images[i - 1]) {
           this.load_image_urls(++this.ep_page, false);
         }
@@ -52,6 +62,8 @@ export default Vue.extend({
         console.log("got " + start);
         this.image_blobs[i - 1] = blob;
         this.image_blob_urls[i - 1] = URL.createObjectURL(blob).toString();
+        // remove page numbers from loading queue
+        this.queue.splice(this.queue.indexOf(i), 1);
       }
     },
     load_image_urls(page: number, flip: boolean) {
@@ -148,10 +160,18 @@ page {
   width: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 }
 
 .gb-reader-info-page {
-  color: lightgrey;
   align-self: center;
+}
+
+.gb-reader-info-queue {
+  align-self: center;
+}
+
+.gb-reader-info-item {
+  color: lightgrey;
 }
 </style>
