@@ -45,8 +45,26 @@ export default Vue.extend({
     this.id = options.id;
     this.ep_num = options.ep_num;
     this.load_comic_info(true);
+    this.disable_zooming();
   },
   methods: {
+    disable_zooming() {
+      const touch_start_listener = (event: TouchEvent) => {
+        if (event.touches.length > 1) {
+          event.preventDefault();
+        }
+      };
+      let lastTouchEnd = 0;
+      const touch_end_listener = (event: TouchEvent) => {
+        var now = new Date().getTime();
+        if (now - lastTouchEnd <= 300) {
+          event.preventDefault();
+        }
+        lastTouchEnd = now;
+      };
+      document.addEventListener("touchstart", touch_start_listener);
+      document.addEventListener("touchend", touch_end_listener, false);
+    },
     async load_images(start: number, end: number) {
       for (let i = start; i <= end; ++i) {
         // check if the page is in loading queue
