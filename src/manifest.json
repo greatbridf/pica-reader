@@ -58,5 +58,8 @@
     },
     "mp-qq": {
         "usingComponents": true
+    },
+    "h5": {
+        "publicPath": "https://greatbridf.xyz/pica/"
     }
 }
