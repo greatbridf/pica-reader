@@ -7,12 +7,18 @@
           class="detail-description-image"
         ></image-view>
         <view class="detail-description-button-wrapper">
-          <button-icon-label class="detail-description-favo">
+          <button-icon-label
+            image-src="/static/icons/star.svg"
+            class="detail-description-favo"
+          >
             <text v-if="comic.isFavourite">已收藏</text>
             <text v-else>收藏</text>
           </button-icon-label>
-          <button-icon-label class="detail-description-like">
-            {{ comic.likesCount }}
+          <button-icon-label
+            image-src="/static/icons/heart.svg"
+            class="detail-description-like"
+          >
+            <text>{{ comic.likesCount }}</text>
           </button-icon-label>
         </view>
       </view>
@@ -55,6 +61,7 @@ import * as pica from "../pica-api/pica";
 import Vue from "vue";
 import imageView from "../components/image-view.vue";
 import buttonIconLabel from "../components/button-icon-label.vue";
+import comicTag from "../components/comic-tag.vue";
 export default Vue.extend({
   data() {
     return {
@@ -88,7 +95,7 @@ export default Vue.extend({
   mounted() {
     this.load_comic();
   },
-  components: { imageView },
+  components: { imageView, buttonIconLabel, comicTag },
 });
 </script>
 
@@ -100,6 +107,19 @@ export default Vue.extend({
 
 .detail-description-image {
   width: 100%;
+}
+
+.detail-description-button-wrapper {
+  display: flex;
+  align-items: flex-start;
+}
+
+.detail-description-favo {
+  flex: 1;
+}
+
+.detail-description-like {
+  flex: 1;
 }
 
 .detail-description-wrapper {
@@ -144,6 +164,12 @@ export default Vue.extend({
   white-space: nowrap;
   color: deepskyblue;
   font-size: 0.7rem;
+}
+
+.detail-description-tags {
+  display: flex;
+  flex-direction: row;
+  flex-flow: wrap;
 }
 
 .detail-description-text-wrapper {
