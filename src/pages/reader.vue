@@ -1,6 +1,8 @@
 <template>
   <view class="gb-reader-wrapper">
-    <img class="gb-reader-image" :src="current_image_blob_url" />
+    <div class="gb-reader-image-wrapper">
+      <img class="gb-reader-image" :src="current_image_blob_url" />
+    </div>
     <div class="gb-reader-info-wrapper">
       <div class="gb-reader-info-item gb-reader-info-page">
         {{ current }} / {{ total }}
@@ -136,7 +138,14 @@ page {
   height: 100%;
 }
 
-.gb-reader-wrapper > img.gb-reader-image {
+.gb-reader-image-wrapper {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.gb-reader-image-wrapper > img.gb-reader-image {
   max-height: 100%;
   max-width: 100%;
 }
