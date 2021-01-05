@@ -71,7 +71,6 @@ export default Vue.extend({
         tags: [] as string[],
         categories: [] as string[],
       } as ComicDetail,
-      eps: [] as EpsItem[],
       thumb: {} as ImageType,
     };
   },
@@ -94,6 +93,23 @@ export default Vue.extend({
     this.load_comic();
   },
   components: { imageView, buttonIconLabel, comicTag },
+  asyncComputed: {
+    async eps() {
+      console.log("compute");
+      let arr = [] as EpsItem[];
+      let n_page = 1;
+      while (true) {
+        let result = await pica.eps(
+          uni.getStorageSync("token"),
+          this.comic_id,
+          n_page++
+        );
+        arr = arr.concat(result.docs);
+        if (result.page >= result.pages) break;
+      }
+      return arr;
+    },
+  },
 });
 </script>
 
@@ -196,10 +212,12 @@ export default Vue.extend({
 
 .detail-eps-item {
   display: flex;
-  width: 3rem;
+  flex: 0 0 20%;
   border: solid 1px darkgrey;
   justify-content: center;
   align-content: center;
-  margin: 0.3rem;
+  font-size: 0.5rem;
+  margin: 2.5%;
+  padding: 0.2rem 0 0.2rem 0;
 }
 </style>
