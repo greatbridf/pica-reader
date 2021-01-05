@@ -59,9 +59,9 @@ export default Vue.extend({
   margin: 0.2rem;
   border: solid black 1px;
 }
-.comic-wrapper:hover {
+/* .comic-wrapper:hover {
   filter: opacity(0.7);
-}
+} */
 .comic-image {
   width: 3rem;
   height: 4rem;
