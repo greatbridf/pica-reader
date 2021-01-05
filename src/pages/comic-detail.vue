@@ -91,8 +91,6 @@ export default Vue.extend({
   onLoad(options: any) {
     if (!options.id) throw new Error("bad options");
     this.comic_id = options.id;
-  },
-  mounted() {
     this.load_comic();
   },
   components: { imageView, buttonIconLabel, comicTag },
