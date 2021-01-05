@@ -27,8 +27,7 @@
 		{
 			"path": "pages/reader",
 			"style": {
-				"navigationBarTitleText": "Comic_Reader",
-				"pageStyle": "height: 100%; background-color: #111;"
+				"navigationBarTitleText": "Comic_Reader"
 			}
 		}
 	],

@@ -47,9 +47,13 @@
     <view class="detail-eps-wrapper">
       <text class="detail-eps-total">共{{ comic.epsCount }}话</text>
       <view class="detail-eps-list">
-        <text class="detail-eps-item" v-for="(ep, index) in eps" :key="index">{{
-          ep.title
-        }}</text>
+        <text
+          @click="go_reader(ep)"
+          class="detail-eps-item"
+          v-for="(ep, index) in eps"
+          :key="index"
+          >{{ ep.title }}</text
+        >
       </view>
     </view>
   </view>
@@ -86,6 +90,11 @@ export default Vue.extend({
         .catch((err) => {
           console.error(err);
         });
+    },
+    go_reader(ep: EpsItem) {
+      uni.navigateTo({
+        url: `/pages/reader?id=${this.comic_id}&ep_num=${ep.order}`,
+      });
     },
   },
   onLoad(options: any) {

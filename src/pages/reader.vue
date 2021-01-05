@@ -112,6 +112,11 @@ export default Vue.extend({
 </script>
 
 <style>
+page {
+  height: 100%;
+  background-color: #111;
+}
+
 .gb-reader-wrapper {
   display: flex;
   justify-content: space-around;
