@@ -61,8 +61,8 @@ export default Vue.extend({
       comic_id: "",
       comic: {
         thumb: {},
-        tags: ["tag1", "tag2", "tag3"],
-        categories: ["cat1", "cat2"],
+        tags: [] as string[],
+        categories: [] as string[],
       } as ComicDetail,
       eps: [] as EpsItem[],
       thumb: {} as ImageType,
@@ -93,6 +93,15 @@ export default Vue.extend({
 </script>
 
 <style>
+.detail-description-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.detail-description-image {
+  width: 100%;
+}
+
 .detail-description-wrapper {
   display: flex;
 }
@@ -100,7 +109,7 @@ export default Vue.extend({
 .detail-description-right {
   display: flex;
   flex-direction: column;
-  flex: 1;
+  flex: 2;
   min-width: 0;
   margin-left: 0.5rem;
 }
