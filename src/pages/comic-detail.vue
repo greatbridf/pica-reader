@@ -229,5 +229,6 @@ export default Vue.extend({
   font-size: 0.5rem;
   margin: 2.5%;
   padding: 0.2rem 0 0.2rem 0;
+  text-align: center;
 }
 </style>
