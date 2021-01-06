@@ -18,6 +18,8 @@ export default Vue.extend({
       title: "",
       comics: [] as Comic[],
       page: 0,
+      total: 0,
+      loading: true,
     };
   },
   methods: {
@@ -39,7 +41,9 @@ export default Vue.extend({
       promise
         .then((result) => {
           this.comics = this.comics.concat(result.docs);
+          this.total = result.pages;
           ++this.page;
+          this.loading = false;
         })
         .catch((err) => {
           console.error(err);
@@ -52,6 +56,15 @@ export default Vue.extend({
     uni.setNavigationBarTitle({
       title: this.title,
     });
+    this.load_comics();
+  },
+  onReachBottom() {
+    if (this.loading) return;
+    if (this.page === this.total) {
+      alert("已经到最底端了");
+      return;
+    }
+    this.loading = true;
     this.load_comics();
   },
   components: {
