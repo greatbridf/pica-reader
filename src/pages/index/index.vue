@@ -12,11 +12,12 @@ import Vue from "vue";
 import * as pica from "../../pica-api/pica";
 import category from "../../components/category.vue";
 import { Category } from "../../pica-api/type";
+import { favorite_item_title } from "@/pica-reader-defs";
 
 export default Vue.extend({
   data() {
     return {
-      categories: [] as Category[],
+      categories: [{ title: favorite_item_title }] as Category[],
       token: "",
     };
   },
@@ -30,7 +31,7 @@ export default Vue.extend({
       pica
         .categories(this.token)
         .then((result) => {
-          this.categories = result;
+          this.categories = this.categories.concat(result);
         })
         .catch((err) => {
           console.error(err);

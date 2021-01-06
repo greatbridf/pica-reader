@@ -86,13 +86,13 @@ async function image_stream(token: string, file_server: string, h_url: string): 
     return (await image_response(token, file_server, h_url)).body!;
 }
 
-async function image_blob(token: string, image: Image): Promise<Blob> {
-    if (image.fileServer === pica_storage_server_url) {
-    } else {
-        throw new Error('storage server not found: ' + image.fileServer)
-    }
-    return (await image_response(token, pxy_img_url, image.path)).blob();
-}
+// async function image_blob(token: string, image: Image): Promise<Blob> {
+//     if (image.fileServer === pica_storage_server_url) {
+//     } else {
+//         throw new Error('storage server not found: ' + image.fileServer)
+//     }
+//     return (await image_response(token, pxy_img_url, image.path)).blob();
+// }
 
 // temporarily unavailable: returns empty array
 async function recommendations(token: string, comic_id: string) {
@@ -121,7 +121,7 @@ export {
     eps,
     ep,
     // image,
-    image_blob,
+    // image_blob,
     image_stream,
     recommendations,
     keywords,

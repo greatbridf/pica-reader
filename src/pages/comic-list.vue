@@ -10,13 +10,41 @@
 import Vue from "vue";
 import comic from "../components/comic.vue";
 import * as pica from "../pica-api/pica";
-import { Comic } from "../pica-api/type";
+import { Comic, ComicList } from "../pica-api/type";
+import { favorite_item_title } from "../pica-reader-defs";
 export default Vue.extend({
   data() {
     return {
       title: "",
       comics: [] as Comic[],
+      page: 0,
     };
+  },
+  methods: {
+    load_comics() {
+      let promise: Promise<ComicList>;
+      if (this.title === favorite_item_title) {
+        promise = pica.favourite(uni.getStorageSync("token"), this.page + 1);
+      } else {
+        promise = pica.list_by_block(
+          uni.getStorageSync("token"),
+          this.title,
+          this.page + 1,
+          "ua"
+        );
+      }
+      this.handle_data(promise);
+    },
+    handle_data(promise: Promise<ComicList>) {
+      promise
+        .then((result) => {
+          this.comics = this.comics.concat(result.docs);
+          ++this.page;
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
   },
   onLoad(options: any) {
     if (!options.title) throw new Error("bad options");
@@ -24,14 +52,7 @@ export default Vue.extend({
     uni.setNavigationBarTitle({
       title: this.title,
     });
-    pica
-      .list_by_block(uni.getStorageSync("token"), this.title, 1, "ua")
-      .then((result) => {
-        this.comics = result.docs;
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    this.load_comics();
   },
   components: {
     comic,
